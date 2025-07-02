@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .form-field {
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 4px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        .error {
+            color: red;
+            font-size: 0.9em;
+        }
+
+        .errorMsg {
+            color: red;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            width: 100%;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .nav-links {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .password-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .password-wrapper input[type="password"],
+        .password-wrapper input[type="text"] {
+            width: 100%;
+            padding-right: 40px;
+        }
+
+        .password-toggle-btn {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2 style="text-align:center;">Login Here</h2>
+
+    <!-- Global Error Message -->
+    <div th:if="${errorMsg}">
+        <h3 class="errorMsg" th:text="${errorMsg}"></h3>
+    </div>
+
+    <!-- Login Form -->
+	<form th:action="@{/loginForm}" th:object="${loginDTO}" method="post">
+
+        <div class="form-field">
+            <label>Email ID:</label>
+            <input type="text" th:field="*{email}" required />
+            <div class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+        </div>
+
+        <div class="form-field">
+            <label>Password:</label>
+            <div class="password-wrapper">
+                <input type="password" id="password" th:field="*{password}" required />
+                <button type="button" class="password-toggle-btn" onclick="togglePassword()">👁️</button>
+            </div>
+            <div class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+        </div>
+
+        <input type="submit" value="Login" />
+    </form>
+
+    <!-- Navigation Links -->
+    <div class="nav-links">
+        <a href="index.html">Home</a> &nbsp;&nbsp;&nbsp;
+        <a href="regPage">Register</a>
+    </div>
+</div>
+
+<!-- Show/Hide Password Script -->
+<script>
+    function togglePassword() {
+        const input = document.getElementById('password');
+        const btn = event.target;
+        const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+        input.setAttribute('type', type);
+        btn.textContent = type === 'password' ? '👁️' : '🙈';
+    }
+</script>
+
+</body>
+</html>
